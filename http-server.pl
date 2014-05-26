@@ -10,7 +10,7 @@ $port = (@ARGV ? $ARGV[0] : 8080);
 # (2) create local TCP socket and set it to listen for connections
 $proto = getprotobyname('tcp');
 socket(S, PF_INET, SOCK_STREAM, $proto) || die;
-setsockopt(S, SOL_SOCKET, SO_REUSEADDR, pack("1", 1)) || die;
+setsockopt(S, SOL_SOCKET, SO_REUSEADDR, pack("l", 1)) || die;
 bind(S, sockaddr_in($port, INADDR_ANY)) || die;
 listen(S, SOMAXCONN) || die;
 
