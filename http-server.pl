@@ -44,7 +44,7 @@ while (1)
     $line =~ s/\r//;
     $line =~ s/\n//;
     if ($line =~ /^\./) { last; }
-    print C $line . }\r\n";
+    print C $line . "h\r\n";
   }
   close(C);
 }
