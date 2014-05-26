@@ -15,16 +15,16 @@ bind(S, sockaddr_in($port, INADDR_ANY)) || die;
 listen(S, SOMAXCONN) || die;
 
 # (3) print a startup message
-printf("    <<<HTTP Intercept Accepting on Port %d>>>\n\n",$port);
+printf("    <<<HTTP Intercept accepting on port %d>>>\n\n",$port);
 
 while (1)
 {
-  # (4) wati for a connection C
+  # (4) wait for a connection C
   $cport_caddr = accept(C,S);
   ($cport,$caddr) = sockaddr_in($cport_caddr);
   C->autoflush(1);
 
-  # (5) print who the connection if from
+  # (5) print who the connection is from
   $cname = gethostbyaddr($caddr,AF_INET);
   printf("    <<<Request From '$s'>>>\n", $cname);
 
@@ -36,7 +36,7 @@ while (1)
   }
 
   # (7) prompt for response message, and input response lines,
-  #     sending response lines to client, until solitart "."
+  #     sending response lines to client, until solitary "."
   printf("    <<<Type Response Followed by '.'>>>\n");
 
   while ($line = <STDIN>)
