@@ -15,37 +15,37 @@ bind(S, sockaddr_in($port, INADDR_ANY)) || die;
 listen(S, SOMAXCONN) || die;
 
 # (3) print a startup message
-printf("    <<<HTTP Intercept accepting on port %d>>>\n\n",$port);
+printf("    <<<Type-O-Serve Accepting on Port %d>>>\n\n",$port);
 
 while (1)
 {
-  # (4) wait for a connection C
-  $cport_caddr = accept(C,S);
-  ($cport,$caddr) = sockaddr_in($cport_caddr);
-  C->autoflush(1);
+    # (4) wait for a connection C
+    $cport_caddr = accept(C, S);
+    ($cport,$caddr) = sockaddr_in($cport_caddr);
+    C->autoflush(1);
 
-  # (5) print who the connection is from
-  $cname = gethostbyaddr($caddr,AF_INET);
-  printf("    <<<Request From '$s'>>>\n", $cname);
+    # (5) print who the connection is from
+    $cname = gethostbyaddr($caddr,AF_INET);
+    printf("    <<<Request From '%s'>>>\n",$cname);
 
-  # (6) read request msg until blank line, and print on screen
-  while ($line = <C>)
-  {
-    print $line;
-    if ($line =~ /^\r/) { last; }
-  }
+    # (6) read request msg until blank line, and print on screen
+    while ($line = <C>)
+    {
+  print $line;
+  if ($line =~ /^\r/) { last; }
+    }
 
-  # (7) prompt for response message, and input response lines,
-  #     sending response lines to client, until solitary "."
-  printf("    <<<Type Response Followed by '.'>>>\n");
+    # (7) prompt for response message, and input response lines,
+    #     sending response lines to client, until solitary "."
+    printf("    <<<Type Response Followed by '.'>>>\n");
 
-  while ($line = <STDIN>)
-  {
-    $line =~ s/\r//;
-    $line =~ s/\n//;
-    if ($line =~ /^\./) { last; }
-    print C $line . "\r\n";
-  }
-  close(C);
+    while ($line = <STDIN>)
+    {
+  $line =~ s/\r//;
+  $line =~ s/\n//;
+  if ($line =~ /^\./) { last; }
+  print C $line . "\r\n";
+    }
+
+    close(C);
 }
-
